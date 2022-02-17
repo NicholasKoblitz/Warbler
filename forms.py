@@ -1,3 +1,4 @@
+from curses.ascii import EM
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length
@@ -23,3 +24,15 @@ class LoginForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])
+
+
+
+class EditUserProfileForm(FlaskForm):
+    """Form for editing user profile information"""
+
+    username = StringField("Username", validators=[DataRequired()])
+    email = StringField("Email",validators=[DataRequired(), Email()])
+    image_url = StringField("Profile Image")
+    header_image_url = StringField("Header Image")
+    bio = StringField("Biography")
+    password = PasswordField("Password", validators=[Length(min=6)])
