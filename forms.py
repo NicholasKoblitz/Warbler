@@ -1,7 +1,8 @@
 from curses.ascii import EM
+from email.policy import default
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, Optional
 
 
 class MessageForm(FlaskForm):
@@ -30,8 +31,8 @@ class LoginForm(FlaskForm):
 class EditUserProfileForm(FlaskForm):
     """Form for editing user profile information"""
 
-    username = StringField("Username", validators=[DataRequired()])
-    email = StringField("Email",validators=[DataRequired(), Email()])
+    username = StringField("Username")
+    email = StringField("Email",validators=[Email(), Optional()])
     image_url = StringField("Profile Image")
     header_image_url = StringField("Header Image")
     bio = StringField("Biography")
