@@ -226,7 +226,7 @@ def profile():
     form.email.default = g.user.email 
     form.image_url.default = g.user.image_url
     form.header_image_url.default = g.user.header_image_url
-    form.bio.default = g.user.bio
+    form.bio.default = g.user.bio if None else "Bio"
 
     if form.validate_on_submit():
 
