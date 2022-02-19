@@ -1,3 +1,5 @@
+from audioop import add
+from crypt import methods
 import os
 
 from flask import Flask, render_template, request, flash, redirect, session, g
@@ -5,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm, EditUserProfileForm
-from models import db, connect_db, User, Message
+from models import Likes, db, connect_db, User, Message
 
 CURR_USER_KEY = "curr_user"
 
@@ -247,6 +249,25 @@ def profile():
         return redirect(f"{user.id}")
 
     return render_template("users/edit.html", form=form)
+
+
+
+
+@app.route("/users/like/<int:msg_id>", methods=["POST"])
+def like_message(msg_id):
+
+    msg = Message.query.get_or_404(msg_id)
+
+    if msg not in g.user.likes:
+
+        add_like = Likes(user_id=g.user.id, message_id=msg.id)
+        db.session.add(add_like)
+        db.session.commit()
+        return redirect("/")
+    else:
+        db.session.delete(Likes.query.filter(Likes.message_id == msg.id).first())
+        db.session.commit()
+        return redirect('/')
 
 
 @app.route('/users/delete', methods=["POST"])
