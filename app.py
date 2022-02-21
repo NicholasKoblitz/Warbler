@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
 
@@ -335,11 +335,12 @@ def messages_show(message_id):
 def messages_destroy(message_id):
     """Delete a message."""
 
-    if not g.user:
+    msg = Message.query.get(message_id)
+
+    if not g.user or g.user.id != msg.user_id:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    msg = Message.query.get(message_id)
     db.session.delete(msg)
     db.session.commit()
 
