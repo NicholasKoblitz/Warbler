@@ -89,10 +89,12 @@ class UserModelTestCase(TestCase):
         self.assertIn(self.u2, self.u.followers)
 
     def test_is_not_followed_by(self):
+        """Tests if us is not following u"""
 
         self.assertNotIn(self.u2, self.u.followers)
 
     def test_user_authenticate(self):
+        """Tests User.authenticate()"""
 
         u3 = User(
             email="test2@test3.com",
